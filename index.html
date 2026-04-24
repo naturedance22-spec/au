@@ -3,42 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aurora Journey - Image UI Version</title>
+    <title>Sky Journey - Refined Layout</title>
     <style>
-        /* 1. 舞台設定：オーロラ背景 */
         body, html {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
             overflow: hidden;
             display: flex;
             align-items: center;
-            /* あなたが用意したオーロラ画像を指定 */
-            background-image: url('YOUR_AURORA_BACKGROUND.jpg'); 
+            background-image: url('sora.jpg'); 
             background-size: cover;
             background-position: center;
-            background-color: #000;
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: white;
+            color: rgba(40, 40, 40, 0.6);
         }
 
-        /* 2. 主役：画像バージョンの気球（黒背景を透過させる） */
+        /* 1. 気球の調整：サイズを小さくし、上の方へ配置 */
         #balloon-container {
             position: absolute;
-            top: 25%;
-            left: 15%;
-            width: 320px; /* 画像に合わせてサイズ調整 */
+            top: 15%; /* 25%から15%へ引き上げ、文字との重なりを回避 */
+            left: 10%;
+            width: 240px; /* 320pxから240pxへ。画面の圧迫感を軽減 */
             z-index: 10;
-            /* 周期8秒、移動幅10pxのゆったりした揺れ */
             animation: floatBalloon 8s ease-in-out infinite;
-            
-            /* 黒背景を透明にし、白や色を背景と合成する魔法 */
-            mix-blend-mode: screen; 
+            mix-blend-mode: normal; 
         }
 
         #balloon-container img {
             width: 100%;
             height: auto;
-            filter: contrast(1.1) brightness(1.1);
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
         }
 
         @keyframes floatBalloon {
@@ -48,88 +42,88 @@
             75% { transform: translateY(10px) rotate(1deg); }
         }
 
-        /* 3. 表示と入力の統合エリア（右下配置） */
+        /* 2. UIスタックの調整：右下の位置を微調整 */
         #ui-stack {
             position: absolute;
-            bottom: 8%;
-            right: 10%;
+            bottom: 5%; /* 下端からの位置 */
+            right: 8%;  /* 右端からの位置 */
             display: flex;
             flex-direction: column;
             align-items: flex-end;
             z-index: 20;
         }
 
-        /* 入力UI：体重表示の上に配置 */
         #input-area {
             display: flex;
             gap: 10px;
             align-items: center;
-            margin-bottom: 35px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 18px;
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 8px 15px;
             border-radius: 12px;
-            backdrop-filter: blur(6px); /* 背後を少しぼかす */
+            backdrop-filter: blur(10px);
         }
+        
         #input-weight {
-            width: 60px;
+            width: 55px;
             border: none;
             background: none;
-            color: white;
-            font-size: 1.2rem;
+            color: rgba(40, 40, 40, 0.9);
+            font-size: 1.1rem;
             text-align: right;
-            border-bottom: 1px solid rgba(255,255,255,0.6);
+            border-bottom: 1px solid rgba(40, 40, 40, 0.2);
             outline: none;
         }
+
         #submit-btn {
-            background: rgba(255, 255, 255, 0.85);
-            color: #222;
+            background: rgba(40, 40, 40, 0.5);
+            color: white;
             border: none;
             padding: 6px 14px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 0.9rem;
             font-weight: bold;
         }
 
-        /* 体重表示エリア（白の半透明） */
         #weight-display-area {
             text-align: right;
             pointer-events: none;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
         }
 
         #label-today {
-            font-size: 1.1rem;
-            opacity: 0.5;
-            letter-spacing: 0.15em;
-            margin-bottom: 2px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            letter-spacing: 0.1em;
+            margin-bottom: 0px;
         }
 
         #main-weight {
-            font-size: 6.5rem;
+            font-size: 5rem; /* スマホで見やすいよう、少しコンパクトに */
             font-weight: bold;
-            opacity: 0.75;
-            line-height: 0.9;
+            opacity: 0.9;
+            line-height: 1;
         }
-        #unit { font-size: 2.2rem; margin-left: 10px; }
+        #unit { font-size: 1.8rem; margin-left: 5px; }
 
         #prev-weight {
-            font-size: 1.6rem;
-            opacity: 0.45;
-            margin-top: 10px;
-            visibility: hidden; /* 初回は非表示 */
+            font-size: 1.3rem;
+            opacity: 0.6;
+            margin-top: 5px;
+            visibility: hidden;
         }
     </style>
 </head>
 <body>
 
     <div id="balloon-container">
-        <img src="balloon.jpg" alt="Balloon">
+        <img src="balloon2.png" alt="Balloon">
     </div>
 
     <div id="ui-stack">
         <div id="input-area">
             <input type="number" id="input-weight" placeholder="00.0" step="0.1">
-            <span style="font-size: 1rem; opacity: 0.8;">kg</span>
+            <span style="font-size: 0.9rem;">kg</span>
             <button id="submit-btn">OK</button>
         </div>
 
@@ -151,4 +145,21 @@
         const prevWeightArea = document.getElementById('prev-weight');
         const prevValue = document.getElementById('prev-value');
 
-        let previousWeightValue
+        let previousWeightValue = null;
+
+        submitBtn.addEventListener('click', () => {
+            const inputValue = inputWeight.value;
+            if (inputValue) {
+                if (previousWeightValue !== null) {
+                    prevValue.textContent = previousWeightValue;
+                    prevWeightArea.style.visibility = 'visible';
+                }
+                displayValue.textContent = inputValue;
+                previousWeightValue = inputValue;
+                inputWeight.value = '';
+            }
+        });
+    </script>
+
+</body>
+</html>
